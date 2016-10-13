@@ -1,3 +1,4 @@
+package main;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
@@ -63,6 +64,8 @@ public class MyMouseAdapter extends MouseAdapter {
 			myPanel.y = y;
 			int gridX = myPanel.getGridX(x, y);
 			int gridY = myPanel.getGridY(x, y);
+			
+
 			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 				//Had pressed outside
 				//Do nothing
@@ -80,26 +83,12 @@ public class MyMouseAdapter extends MouseAdapter {
 							//On the left column and on the top row... do nothing
 						} else {
 							//On the grid other than on the left column and on the top row:
-							Color newColor = null;
-							switch (generator.nextInt(5)) {
-							case 0:
-								newColor = Color.YELLOW;
-								break;
-							case 1:
-								newColor = Color.MAGENTA;
-								break;
-							case 2:
-								newColor = Color.BLACK;
-								break;
-							case 3:
-								newColor = new Color(0x964B00);   //Brown (from http://simple.wikipedia.org/wiki/List_of_colors)
-								break;
-							case 4:
-								newColor = new Color(0xB57EDC);   //Lavender (from http://simple.wikipedia.org/wiki/List_of_colors)
-								break;
+							
+							//Verify if there is a mine, and if there is, pain the selected square black
+							if(myPanel.mineSweeperBoard.verifyMine(myPanel.mouseDownGridX, myPanel.mouseDownGridY)){
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = myPanel.mineSweeperBoard.giveCurrentMineColor(myPanel.mouseDownGridX, myPanel.mouseDownGridY);
+								myPanel.repaint();
 							}
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = newColor;
-							myPanel.repaint();
 						}
 					}
 				}
@@ -107,7 +96,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			myPanel.repaint();
 			break;
 		case 3:		//Right mouse button
-			//Do nothing
+			
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
 			//Do nothing
