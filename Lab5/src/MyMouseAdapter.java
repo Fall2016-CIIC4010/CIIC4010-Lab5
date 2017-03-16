@@ -103,9 +103,11 @@ public class MyMouseAdapter extends MouseAdapter
 						//Do nothing
 					} else {
 						//Released the mouse button on the same cell where it was pressed
-						if ((gridX == 0) || (gridY == 0))//Paint random color every cell on row
+						if ((gridX == 0) || (gridY == 0))//Paint random color entire row or colum except top and left
 						{
 							
+							if(!(gridY==0))//paint row
+								{
 									for (int i = 1; i < myPanel.getTotalCol(); i++)
 									{
 										Color newColor = null;
@@ -116,14 +118,35 @@ public class MyMouseAdapter extends MouseAdapter
 										while(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(newColor));
 
 
-							  //Top row
+							  
 										if(!(gridX==0 && gridY==0))
 											{
 											myPanel.colorArray[(myPanel.mouseDownGridX)+i][myPanel.mouseDownGridY] = newColor;
 											myPanel.repaint();
 											}
+								
 									}
+								}else//paint colum
+									{
+									for (int i = 1; i < myPanel.getTotalCol(); i++)
+										{
+											Color newColor = null;
+											do
+												{
+												newColor=randomColor();
+												}
+											while(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(newColor));
+
+
+							
+										if(!(gridX==0 && gridY==0))
+											{
+											myPanel.colorArray[(myPanel.mouseDownGridX)][myPanel.mouseDownGridY+i] = newColor;
+											myPanel.repaint();
+											}
 								//myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = newColor;
+										}
+									}
 							
 
 						} else{
