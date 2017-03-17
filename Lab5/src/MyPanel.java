@@ -18,9 +18,20 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridY = 0;
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	
-	public int getTotalCol() {
+	public Color[][] getColorArray()
+	{
+		return colorArray;
+	}
+	public int getTotalCol() 
+	{
 		return TOTAL_COLUMNS;
 	}
+	
+	public int getTotalRows()
+	{
+		return TOTAL_ROWS;
+	}
+	
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
@@ -43,6 +54,7 @@ public class MyPanel extends JPanel {
 			}
 		}
 	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

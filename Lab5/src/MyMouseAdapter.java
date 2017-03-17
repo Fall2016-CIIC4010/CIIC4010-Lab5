@@ -60,7 +60,8 @@ public class MyMouseAdapter extends MouseAdapter
 			myPanel.mouseDownGridY = myPanel.getGridY(x, y);
 			myPanel.repaint();
 			break;
-		case 3:		//Right mouse button
+		case 3:
+			//Right mouse button
 			//Do nothing
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
@@ -90,6 +91,8 @@ public class MyMouseAdapter extends MouseAdapter
 			myPanel.y = y;
 			int gridX = myPanel.getGridX(x, y);
 			int gridY = myPanel.getGridY(x, y);
+			
+			
 			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
 				//Had pressed outside
 				//Do nothing
@@ -105,6 +108,16 @@ public class MyMouseAdapter extends MouseAdapter
 						//Released the mouse button on the same cell where it was pressed
 						if ((gridX == 0) || (gridY == 0))//Paint random color entire row or colum except top and left
 						{
+							if(gridX==0 && gridY==10)//colors 3x3 center randomly
+							{
+								for(int i=4;i<7;i++)
+								{
+									for (int j=4;j<7;j++)
+									{
+										myPanel.colorArray[i][j] = randomColor();
+									}
+								}
+							}
 
 							if(gridY!=0)//paint row
 							{
@@ -113,7 +126,7 @@ public class MyMouseAdapter extends MouseAdapter
 									myPanel.colorArray[(myPanel.mouseDownGridX)+i][myPanel.mouseDownGridY] = randomColor();
 								}
 							}
-							else if(gridX!=0)//paint row
+							else if(gridX!=0)//paint colum 
 							{
 								for (int i = 1; i < myPanel.getTotalCol(); i++)
 								{
