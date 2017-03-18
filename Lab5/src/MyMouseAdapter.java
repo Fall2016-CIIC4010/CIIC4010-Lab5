@@ -61,6 +61,25 @@ public class MyMouseAdapter extends MouseAdapter
 			myPanel.repaint();
 			break;
 		case 3:
+			Component cr = e.getComponent();
+			while (!(cr instanceof JFrame)) {
+				cr = cr.getParent();
+				if (cr == null) {
+					return;
+				}
+			}
+
+			JFrame myRightClickFrame = (JFrame) cr;
+			MyPanel myRightClickPanel = (MyPanel) myRightClickFrame.getContentPane().getComponent(0);
+			Insets myRightClickInsets = myRightClickFrame.getInsets();
+			int xr1 = myRightClickInsets.left;
+			int yr1 = myRightClickInsets.top;
+			e.translatePoint(-xr1, -yr1);
+			int xr2 = e.getX();
+			int yr2 = e.getY();
+			myRightClickPanel.x = xr2;
+			myRightClickPanel.y = yr2;
+			myRightClickPanel.repaint();
 			//Right mouse button
 			//Do nothing
 			break;
@@ -70,7 +89,8 @@ public class MyMouseAdapter extends MouseAdapter
 		}
 	}
 	public void mouseReleased(MouseEvent e) {
-		switch (e.getButton()) {
+		switch (e.getButton())
+		{
 		case 1:		//Left mouse button
 			Component c = e.getComponent();
 			while (!(c instanceof JFrame)) {
@@ -121,7 +141,7 @@ public class MyMouseAdapter extends MouseAdapter
 
 							if(gridY!=0)//paint row
 							{
-								for (int i = 1; i < myPanel.getTotalCol(); i++)
+								for (int i = 1; i < myPanel.getTotalCol(); i++)//created getter for private variable in myPanel
 								{
 									myPanel.colorArray[(myPanel.mouseDownGridX)+i][myPanel.mouseDownGridY] = randomColor();
 								}
@@ -134,11 +154,11 @@ public class MyMouseAdapter extends MouseAdapter
 								}
 							}
 							else {
-								for (int i = 1; i < myPanel.getTotalCol(); i++)
-								{
-									myPanel.colorArray[(myPanel.mouseDownGridX)+i][myPanel.mouseDownGridY+i] = randomColor();
+									for (int i = 1; i < myPanel.getTotalCol(); i++)//paint diagonal
+									{
+										myPanel.colorArray[(myPanel.mouseDownGridX)+i][myPanel.mouseDownGridY+i] = randomColor();
+									}
 								}
-							}
 
 						}else{
 								//On the grid other than on the left column and on the top row: set random color
@@ -158,7 +178,63 @@ public class MyMouseAdapter extends MouseAdapter
 					myPanel.repaint();
 					break;
 				}
-			case 3:		//Right mouse button
+			case 3:	//when right click outside grid change white cells color
+				Component cr = e.getComponent();
+				while (!(cr instanceof JFrame)) {
+					cr = cr.getParent();
+					if (cr == null) {
+						return;
+					}
+				}
+
+				JFrame myRightClickFrame = (JFrame) cr;
+				MyPanel myRightClickPanel = (MyPanel) myRightClickFrame.getContentPane().getComponent(0);
+				Insets myRightClickInsets = myRightClickFrame.getInsets();
+				int xr1 = myRightClickInsets.left;
+				int yr1 = myRightClickInsets.top;
+				e.translatePoint(-xr1, -yr1);
+				int xr2 = e.getX();
+				int yr2 = e.getY();
+				myRightClickPanel.x = xr2;
+				myRightClickPanel.y = yr2;
+			
+				
+				int rightClickGridX = myRightClickPanel.getGridX(xr2, yr2);
+				int rightClickGridY = myRightClickPanel.getGridY(xr2, yr2);
+				Color newColor=null;
+				
+				if ((myRightClickPanel.mouseDownGridX == -1) || (myRightClickPanel.mouseDownGridY == -1))
+					{
+					}else
+					{
+						if ((rightClickGridX == -1) || (rightClickGridY == -1)) 
+						{
+							for(int i=1;i<myRightClickPanel.getTotalCol();i++)
+							{
+								for (int j=1;j<myRightClickPanel.getTotalCol();j++)
+								{
+									switch(generator.nextInt(3))
+									{
+									case 0:
+										newColor=Color.PINK;
+										break;
+									case 1:
+										newColor=Color.CYAN;
+										break;
+									case 2: newColor=Color.GREEN;
+									}
+									myRightClickPanel.colorArray[i][j] = newColor;
+									
+								}
+							}
+							myRightClickPanel.repaint();
+						} 
+							
+							
+						//Is releasing outside
+						//Do nothing
+					} 
+				//Right mouse button
 				//Do nothing
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)

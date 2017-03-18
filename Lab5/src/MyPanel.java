@@ -18,10 +18,6 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridY = 0;
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	
-	public Color[][] getColorArray()
-	{
-		return colorArray;
-	}
 	public int getTotalCol() 
 	{
 		return TOTAL_COLUMNS;
