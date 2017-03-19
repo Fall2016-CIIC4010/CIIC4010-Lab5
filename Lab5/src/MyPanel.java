@@ -18,6 +18,14 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridY = 0;
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	
+	Random random = new Random();
+	int mines[][] = new int [10][11];
+	int[][] neighbores = new int [10][11];
+	boolean [][] revealed = new boolean [10][11];
+	boolean [][] flagged = new boolean [10][11];
+	
+	
+	
 	public int getTotalCol() 
 	{
 		return TOTAL_COLUMNS;
@@ -44,9 +52,50 @@ public class MyPanel extends JPanel {
 		for (int y = 0; y < TOTAL_ROWS; y++) {   //Left column
 			colorArray[0][y] = Color.LIGHT_GRAY;
 		}
-		for (int x = 1; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-			for (int y = 1; y < TOTAL_ROWS; y++) {
+		for (int x = 1; x < TOTAL_COLUMNS; x++) 
+		{   //The rest of the grid
+			for (int y = 1; y < TOTAL_ROWS; y++) 
+			{
+				if(random.nextInt(100)<20)//asigns mines to cell 20% chance
+					{
+						mines [x][y]=1;
+						
+					}else
+						{
+							mines[x][y]=0;
+						}
+				flagged[x][y]=false;//sets all cell unflagged
+				revealed[x][y]=false;//sets all the cells to not revealed
 				colorArray[x][y] = Color.WHITE;
+			}
+		}
+		for (int x=1;x<TOTAL_COLUMNS;x++)//Array of neighbore mines
+		{
+			for (int y=1;y<TOTAL_ROWS;y++)
+			{
+				if(mines[x][y]!=1)
+				{
+					int neighborCount=0;
+					if(x>1 && y>1 && mines[x-1][y-1]==1)//top left 
+						neighborCount++;
+					if(x>1 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
+						neighborCount++;
+					if(x>1 && mines[x-1][y]==1)//left
+						neighborCount++;
+					if(y>1 && mines[x][y-1]==1)//top
+						neighborCount++;
+					if(y<mines.length-1 && mines[x][y+1]==1)//bottom
+						neighborCount++;
+					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==1)//down right
+						neighborCount++;
+					if(x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
+						neighborCount++;
+					if(x<mines.length-1 && mines[x+1][y]==1)//Right
+						neighborCount++;
+					
+					neighbores[x][y]=neighborCount;
+				}
+				
 			}
 		}
 	}
@@ -141,4 +190,5 @@ public class MyPanel extends JPanel {
 		}
 		return y;
 	}
+	
 }
