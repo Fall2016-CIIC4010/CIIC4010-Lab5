@@ -98,7 +98,7 @@ public class MyMouseAdapter extends MouseAdapter
 									{   
 										for (int j = 1; j < myPanel.getTotalRows(); j++) 
 										{
-											myPanel.colorArray[i][j] = Color.GRAY;
+											
 											if(myPanel.mines[i][j]== 1)//paints bomb cells black
 												myPanel.colorArray[i][j] = Color.BLACK;
 														
