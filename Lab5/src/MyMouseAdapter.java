@@ -91,29 +91,33 @@ public class MyMouseAdapter extends MouseAdapter
 						}else{
 								//On the grid other than on the left column and on the top row: set random color
 								//Color newColor = null;
-								myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
-								if(myPanel.mines[myPanel.mouseDownGridX][myPanel.mouseDownGridY]== 1)//if it hits a bomb reveal everything
+								//myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
+								if(myPanel.flagged[myPanel.mouseDownGridX][myPanel.mouseDownGridY]==false)
 								{
-									for (int i = 1; i < myPanel.getTotalCol(); i++) 
-									{   
-										for (int j = 1; j < myPanel.getTotalRows(); j++) 
-										{
-											
-											if(myPanel.mines[i][j]== 1)//paints bomb cells black
-												myPanel.colorArray[i][j] = Color.BLACK;
-														
-										}
-									}
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
-									
-									
-								}else
+									if(myPanel.mines[myPanel.mouseDownGridX][myPanel.mouseDownGridY]== 1)//if it hits a bomb reveal everything
 									{
-									
-									myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-									System.out.println(myPanel.neighbores[myPanel.mouseDownGridX][myPanel.mouseDownGridY]);
-									}
-								
+										for (int i = 1; i < myPanel.getTotalCol(); i++) 
+										{   
+											for (int j = 1; j < myPanel.getTotalRows(); j++) 
+											{
+												
+												if(myPanel.mines[i][j]== 1)//paints bomb cells black
+													myPanel.colorArray[i][j] = Color.BLACK;
+															
+											}
+										}
+										
+										myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+										
+										
+									}else
+										{
+										myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
+										myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+										
+										System.out.println(myPanel.neighbores[myPanel.mouseDownGridX][myPanel.mouseDownGridY]);
+										}
+								}
 							}
 						}
 					}
@@ -137,6 +141,8 @@ public class MyMouseAdapter extends MouseAdapter
 				e.translatePoint(-xr1, -yr1);
 				int xr2 = e.getX();
 				int yr2 = e.getY();
+				myRightClickPanel.mouseDownGridX = myRightClickPanel.getGridX(xr2, yr2);
+				myRightClickPanel.mouseDownGridY = myRightClickPanel.getGridY(xr2, yr2);
 				myRightClickPanel.x = xr2;
 				myRightClickPanel.y = yr2;
 			
@@ -158,17 +164,14 @@ public class MyMouseAdapter extends MouseAdapter
 							//Do nothing
 						} else {
 							//Released the mouse button on the same cell where it was pressed
-							if ((rightClickGridX == 0) || (rightClickGridY == 0))//Paint random color entire row or colum except top and left
-							{
-								
-
-							}else{
+							
 									//On the grid other than on the left column and on the top row: set random color
-									//Color newColor = null;
+									//Color newColor = null;*/
 								
-								//SI QUITAS EL IF VES COMO PRIMERO TIENES QUE DAR LEFT CLICK PARA QUE COJA EL FLAGGED CON EL RIGHT CLICK
+								
 									if(myRightClickPanel.revealed[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]!= true)//does not let to marked revealed mines
 									{
+										
 										if(myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]== false)//paints the cell if it doesn't have a bomb
 										{
 											myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.RED;
@@ -178,10 +181,10 @@ public class MyMouseAdapter extends MouseAdapter
 										}else
 											{
 											myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = false;
-											
+											myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.WHITE;
 											}
 									}
-								}
+								
 							}
 						}
 						myRightClickPanel.repaint();

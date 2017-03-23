@@ -19,10 +19,11 @@ public class MyPanel extends JPanel {
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	
 	Random random = new Random();
-	int mines[][] = new int [10][11];
-	int[][] neighbores = new int [10][11];
-	boolean [][] revealed = new boolean [10][11];
-	boolean [][] flagged = new boolean [10][11];
+	int mines[][] = new int [TOTAL_COLUMNS][TOTAL_ROWS];
+	int[][] neighbores = new int [TOTAL_COLUMNS][TOTAL_ROWS];
+	boolean [][] revealed = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
+	boolean [][] flagged = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
+	String[][] neighboresText = new  String [TOTAL_COLUMNS][TOTAL_ROWS];
 	
 	
 	
@@ -94,6 +95,10 @@ public class MyPanel extends JPanel {
 						neighborCount++;
 					
 					neighbores[x][y]=neighborCount;
+					if(neighborCount==0)
+						neighboresText[x][y] = "";
+					else
+						neighboresText[x][y] = String.valueOf(neighbores[x][y]);
 				}
 				
 			}
