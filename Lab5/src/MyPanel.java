@@ -10,13 +10,23 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 9;
-	private static final int TOTAL_ROWS = 10;   //Last row has only one cell
+	public final int TOTAL_COLUMNS = 9;
+	public final int TOTAL_ROWS = 10;   //Last row has only one cell
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
+
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
+	public Boolean[][] BombsOnGrid = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+	public int NumberOfBombsOnMap = 0;
+	public int TotalBombs = (TOTAL_COLUMNS*(TOTAL_ROWS-1))/5;
+	public Boolean GameOver= false;
+
+	public Random rangen;
+
+
+
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
@@ -27,12 +37,36 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+		
+		rangen = new Random();
+		
+		
+		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS-1; y++) {
 				colorArray[x][y] = Color.WHITE;
+				BombsOnGrid[x][y] =false;
+			}//The rest of the grid
+		}
+		
+		
+		
+		while (NumberOfBombsOnMap!=TotalBombs){
+			for (int x = 0; x < TOTAL_COLUMNS; x++) {
+				for (int y = 0; y < TOTAL_ROWS-1; y++) {
+					int Random = rangen.nextInt(TOTAL_COLUMNS*(TOTAL_ROWS-1))+1;
+					if (((Random == 5) && BombsOnGrid[x][y] !=true)){
+						BombsOnGrid[x][y]=true;
+						NumberOfBombsOnMap++;
+						//colorArray[x][y]=Color.BLACK;
+
+					}
+
+				}
 			}
 		}
 	}
+	
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -59,12 +93,13 @@ public class MyPanel extends JPanel {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)));
 		}
 
+
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS-1; y++) {
-					Color c = colorArray[x][y];
-					g.setColor(c);
-					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
+				Color c = colorArray[x][y];
+				g.setColor(c);
+				g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 			}
 		}
 	}
