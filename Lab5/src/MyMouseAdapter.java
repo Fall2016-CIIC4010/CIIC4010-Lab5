@@ -149,7 +149,7 @@ public class MyMouseAdapter extends MouseAdapter
 				
 				int rightClickGridX = myRightClickPanel.getGridX(xr2, yr2);
 				int rightClickGridY = myRightClickPanel.getGridY(xr2, yr2);
-				Color newColor=null;
+				
 				
 				if ((myRightClickPanel.mouseDownGridX == -1) || (myRightClickPanel.mouseDownGridY == -1)) {
 					//Had pressed outside
