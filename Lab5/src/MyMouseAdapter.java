@@ -84,41 +84,40 @@ public class MyMouseAdapter extends MouseAdapter
 						//Do nothing
 					} else {
 						//Released the mouse button on the same cell where it was pressed
-						if ((gridX == 0) || (gridY == 0))//Paint random color entire row or colum except top and left
-						{
-							
-
-						}else{
-								//On the grid other than on the left column and on the top row: set random color
-								//Color newColor = null;
-								//myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
+						
+								
 								if(myPanel.flagged[myPanel.mouseDownGridX][myPanel.mouseDownGridY]==false)
 								{
 									if(myPanel.mines[myPanel.mouseDownGridX][myPanel.mouseDownGridY]== 1)//if it hits a bomb reveal everything
 									{
-										for (int i = 1; i < myPanel.getTotalCol(); i++) 
+										for (int i = 0; i < myPanel.getTotalCol(); i++) 
 										{   
-											for (int j = 1; j < myPanel.getTotalRows(); j++) 
+											for (int j = 0; j < myPanel.getTotalRows(); j++) 
 											{
 												
 												if(myPanel.mines[i][j]== 1)//paints bomb cells black
 													myPanel.colorArray[i][j] = Color.BLACK;
+												myPanel.revealed[i][j]=true;
 															
 											}
 										}
 										
-										myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+										
 										
 										
 									}else
 										{
-										myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
-										myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-										
-										System.out.println(myPanel.neighbores[myPanel.mouseDownGridX][myPanel.mouseDownGridY]);
+											if(myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]==true){
+											}else
+											{
+												myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
+												myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
+											
+											System.out.println(myPanel.neighbores[myPanel.mouseDownGridX][myPanel.mouseDownGridY]);
+											}
 										}
 								}
-							}
+							
 						}
 					}
 					myPanel.repaint();
@@ -169,19 +168,19 @@ public class MyMouseAdapter extends MouseAdapter
 									//Color newColor = null;*/
 								
 								
-									if(myRightClickPanel.revealed[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]!= true)//does not let to marked revealed mines
+									if(myRightClickPanel.revealed[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]!= true)//does not let to marked revealed spaces
 									{
 										
-										if(myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]== false)//paints the cell if it doesn't have a bomb
-										{
-											myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.RED;
-											myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = true;
-											
-											
-										}else
+											if(myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]== false)//paints the cell if it doesn't have a bomb
 											{
-											myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = false;
-											myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.WHITE;
+												myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.RED;
+												myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = true;
+												
+												
+											}else
+												{
+												myRightClickPanel.flagged[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = false;
+												myRightClickPanel.colorArray[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY] = Color.WHITE;
 											}
 									}
 								

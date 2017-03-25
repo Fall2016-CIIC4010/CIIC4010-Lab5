@@ -10,8 +10,8 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 10;
-	private static final int TOTAL_ROWS = 11;   //Last row has only one cell
+	private static final int TOTAL_COLUMNS = 9;
+	private static final int TOTAL_ROWS = 9;   
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
@@ -47,15 +47,10 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //Top row
-			colorArray[x][0] = Color.LIGHT_GRAY;
-		}
-		for (int y = 0; y < TOTAL_ROWS; y++) {   //Left column
-			colorArray[0][y] = Color.LIGHT_GRAY;
-		}
-		for (int x = 1; x < TOTAL_COLUMNS; x++) 
+
+		for (int x = 0; x < TOTAL_COLUMNS; x++) 
 		{   //The rest of the grid
-			for (int y = 1; y < TOTAL_ROWS; y++) 
+			for (int y = 0; y < TOTAL_ROWS; y++) 
 			{
 				if(random.nextInt(100)<20)//asigns mines to cell 20% chance
 					{
@@ -70,26 +65,26 @@ public class MyPanel extends JPanel {
 				colorArray[x][y] = Color.WHITE;
 			}
 		}
-		for (int x=1;x<TOTAL_COLUMNS;x++)//Array of neighbore mines
+		for (int x=0;x<TOTAL_COLUMNS;x++)//Array of neighbore mines
 		{
-			for (int y=1;y<TOTAL_ROWS;y++)
+			for (int y=0;y<TOTAL_ROWS;y++)
 			{
 				if(mines[x][y]!=1)
 				{
 					int neighborCount=0;
-					if(x>1 && y>1 && mines[x-1][y-1]==1)//top left 
+					if(x>0 && y>0 && mines[x-1][y-1]==1)//top left 
 						neighborCount++;
-					if(x>1 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
+					if(x>0 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
 						neighborCount++;
-					if(x>1 && mines[x-1][y]==1)//left
+					if(x>0 && mines[x-1][y]==1)//left
 						neighborCount++;
-					if(y>1 && mines[x][y-1]==1)//top
+					if(y>0 && mines[x][y-1]==1)//top
 						neighborCount++;
 					if(y<mines.length-1 && mines[x][y+1]==1)//bottom
 						neighborCount++;
 					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==1)//down right
 						neighborCount++;
-					if(x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
+					if(y>0&&x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
 						neighborCount++;
 					if(x<mines.length-1 && mines[x+1][y]==1)//Right
 						neighborCount++;
@@ -124,26 +119,28 @@ public class MyPanel extends JPanel {
 		//Draw the grid minus the bottom row (which has only one cell)
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
-		for (int y = 0; y <= TOTAL_ROWS - 1; y++) {
+		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
-			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)));
+			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS )));
 		}
 
 		//Draw an additional cell at the bottom left
-		g.drawRect(x1 + GRID_X, y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)), INNER_CELL_SIZE + 1, INNER_CELL_SIZE + 1);
+		//g.drawRect(x1 + GRID_X, y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)), INNER_CELL_SIZE + 1, INNER_CELL_SIZE + 1);
 
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				if ((x == 0) || (y != TOTAL_ROWS - 1)) {
+				if ((x == 0) || (y != TOTAL_ROWS )) {
 					Color c = colorArray[x][y];
 					g.setColor(c);
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 				}
+				
 			}
 		}
+		
 	}
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
@@ -162,7 +159,7 @@ public class MyPanel extends JPanel {
 		}
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
-		if (x == 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
+		if (x >= 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
 			return x;
 		}
 		if (x < 0 || x > TOTAL_COLUMNS - 1 || y < 0 || y > TOTAL_ROWS - 2) {   //Outside the rest of the grid
@@ -187,7 +184,7 @@ public class MyPanel extends JPanel {
 		}
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
-		if (x == 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
+		if (x >= 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
 			return y;
 		}
 		if (x < 0 || x > TOTAL_COLUMNS - 1 || y < 0 || y > TOTAL_ROWS - 2) {   //Outside the rest of the grid
