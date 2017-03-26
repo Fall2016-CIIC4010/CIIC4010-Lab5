@@ -24,6 +24,7 @@ public class MyPanel extends JPanel {
 	boolean [][] revealed = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
 	boolean [][] flagged = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
 	String[][] neighboresText = new  String [TOTAL_COLUMNS][TOTAL_ROWS];
+	int MINE = 1, notClicked = 0;
 	
 	
 	
@@ -54,11 +55,11 @@ public class MyPanel extends JPanel {
 			{
 				if(random.nextInt(100)<20)//asigns mines to cell 20% chance
 					{
-						mines [x][y]=1;
+						mines [x][y]=MINE;
 						
 					}else
 						{
-							mines[x][y]=0;
+							mines[x][y]=notClicked;
 						}
 				flagged[x][y]=false;//sets all cell unflagged
 				revealed[x][y]=false;//sets all the cells to not revealed
@@ -69,24 +70,24 @@ public class MyPanel extends JPanel {
 		{
 			for (int y=0;y<TOTAL_ROWS;y++)
 			{
-				if(mines[x][y]!=1)
+				if(mines[x][y]!=MINE)
 				{
 					int neighborCount=0;
-					if(x>0 && y>0 && mines[x-1][y-1]==1)//top left 
+					if(x>0 && y>0 && mines[x-1][y-1]==MINE)//top left 
 						neighborCount++;
-					if(x>0 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
+					if(x>0 && y<mines.length-1 && mines[x-1][y+1]==MINE)//down left 
 						neighborCount++;
-					if(x>0 && mines[x-1][y]==1)//left
+					if(x>0 && mines[x-1][y]==MINE)//left
 						neighborCount++;
-					if(y>0 && mines[x][y-1]==1)//top
+					if(y>0 && mines[x][y-1]==MINE)//top
 						neighborCount++;
-					if(y<mines.length-1 && mines[x][y+1]==1)//bottom
+					if(y<mines.length-1 && mines[x][y+1]==MINE)//bottom
 						neighborCount++;
-					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==1)//down right
+					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==MINE)//down right
 						neighborCount++;
-					if(y>0&&x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
+					if(y>0&&x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==MINE)//top right
 						neighborCount++;
-					if(x<mines.length-1 && mines[x+1][y]==1)//Right
+					if(x<mines.length-1 && mines[x+1][y]==MINE)//Right
 						neighborCount++;
 					
 					neighbores[x][y]=neighborCount;
@@ -95,12 +96,15 @@ public class MyPanel extends JPanel {
 					else
 						neighboresText[x][y] = String.valueOf(neighbores[x][y]);
 				}
-				
+				else {
+					neighboresText[x][y] = "";
+				}
 			}
 		}
 	}
 	
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 
 		//Compute interior coordinates
@@ -111,7 +115,11 @@ public class MyPanel extends JPanel {
 		int y2 = getHeight() - myInsets.bottom - 1;
 		int width = x2 - x1;
 		int height = y2 - y1;
-
+		
+		
+		
+			
+		
 		//Paint the background
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(x1, y1, width + 1, height + 1);
@@ -132,13 +140,29 @@ public class MyPanel extends JPanel {
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				if ((x == 0) || (y != TOTAL_ROWS )) {
+				
 					Color c = colorArray[x][y];
 					g.setColor(c);
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-				}
+					g.setColor(Color.WHITE);
+					g.drawString(neighboresText[x][y], x *(INNER_CELL_SIZE+1)+38, (y*30)+44);
+					if(flagged[x][y]==true)
+					{
+						g.setColor(Color.RED);
+						g.drawString(neighboresText[x][y], x *(INNER_CELL_SIZE+1)+38, (y*30)+44);
+					}
 				
 			}
+//			for (int i = 0; i < TOTAL_COLUMNS; i++)
+//			{
+//				for (int j = 0; j < TOTAL_ROWS; j++)
+//				{
+////					g.setColor(Color.WHITE);
+//					g.drawString(neighboresText[i][j], x *(INNER_CELL_SIZE+1)+38, (y*30)+44);
+//					g.setColor(Color.BLACK);
+//				
+//				}
+//			}
 		}
 		
 	}
@@ -191,6 +215,36 @@ public class MyPanel extends JPanel {
 			return -1;
 		}
 		return y;
+	}
+	
+	public void clearZeros(int [][] toClear,int xpos, int ypos)
+	{
+		if(toClear[xpos][ypos]==0)
+		{
+			return ;
+		}else
+			{
+				if(neighbores[xpos][ypos]==0)
+				{
+					if(x>0 && y>0 && mines[x-1][y-1]==1)//top left 
+						
+					if(x>0 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
+						
+					if(x>0 && mines[x-1][y]==1)//left
+						
+					if(y>0 && mines[x][y-1]==1)//top
+						
+					if(y<mines.length-1 && mines[x][y+1]==1)//bottom
+						
+					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==1)//down right
+						
+					if(y>0&&x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
+						
+					if(x<mines.length-1 && mines[x+1][y]==1){}//Right
+						
+				}
+			}
+		clearZeros(toClear, xpos, ypos);
 	}
 	
 }
