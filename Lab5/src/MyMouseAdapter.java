@@ -110,10 +110,7 @@ public class MyMouseAdapter extends MouseAdapter
 											if(myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]==true){
 											}else
 											{
-												myPanel.revealed[myPanel.mouseDownGridX][myPanel.mouseDownGridY]= true;
-												myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-											
-											System.out.println(myPanel.neighbores[myPanel.mouseDownGridX][myPanel.mouseDownGridY]);
+												myPanel.clearZeros(gridX, gridY);
 											}
 										}
 								}

@@ -24,7 +24,7 @@ public class MyPanel extends JPanel {
 	boolean [][] revealed = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
 	boolean [][] flagged = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
 	String[][] neighboresText = new  String [TOTAL_COLUMNS][TOTAL_ROWS];
-	int MINE = 1, notClicked = 0;
+	int MINE = 1, notClicked = 0, noNeighbores = 0;
 	
 	
 	
@@ -217,34 +217,76 @@ public class MyPanel extends JPanel {
 		return y;
 	}
 	
-	public void clearZeros(int [][] toClear,int xpos, int ypos)
+	public void clearZeros(int xpos, int ypos)
 	{
-		if(toClear[xpos][ypos]==0)
+		if(neighbores[xpos][ypos]!=noNeighbores)
 		{
+			revealed[xpos][ypos]= true;
+			colorArray[xpos][ypos] = Color.GRAY;
 			return ;
 		}else
 			{
-				if(neighbores[xpos][ypos]==0)
+				revealed[xpos][ypos]= true;
+				colorArray[xpos][ypos] = Color.GRAY;
+				if(xpos>0 && ypos>0 && revealed[xpos-1][ypos-1]!=true )//top left 
 				{
-					if(x>0 && y>0 && mines[x-1][y-1]==1)//top left 
-						
-					if(x>0 && y<mines.length-1 && mines[x-1][y+1]==1)//down left 
-						
-					if(x>0 && mines[x-1][y]==1)//left
-						
-					if(y>0 && mines[x][y-1]==1)//top
-						
-					if(y<mines.length-1 && mines[x][y+1]==1)//bottom
-						
-					if(x<mines.length-1&& y< mines.length-1&&mines[x+1][y+1]==1)//down right
-						
-					if(y>0&&x<mines.length-1&& y< mines.length&&mines[x+1][y-1]==1)//top right
-						
-					if(x<mines.length-1 && mines[x+1][y]==1){}//Right
-						
+					revealed[xpos-1][ypos-1]= true;
+					colorArray[xpos-1][ypos-1] = Color.GRAY;
+					clearZeros(xpos-1,ypos-1);
 				}
+						
+				if(xpos>0 && ypos<mines.length-1 && revealed[xpos-1][ypos+1]!=true  )//down left 
+				{
+					revealed[xpos-1][ypos+1]= true;
+					colorArray[xpos-1][ypos+1] = Color.GRAY;
+					clearZeros(xpos-1,ypos+1);
+				}
+						
+				if(xpos>0 && revealed[xpos-1][ypos]!=true)//left
+				{
+					revealed[xpos-1][ypos]= true;
+					colorArray[xpos-1][ypos] = Color.GRAY;
+					clearZeros(xpos-1,ypos);
+				}
+						
+				if(ypos>0 && revealed[xpos][ypos-1]!=true)//top
+				{
+					revealed[xpos][ypos-1]= true;
+					colorArray[xpos][ypos-1] = Color.GRAY;
+					clearZeros(xpos,ypos-1);
+				}
+						
+				if(ypos<mines.length-1 &&  revealed[xpos][ypos+1]!=true)//bottom
+				{
+					revealed[xpos][ypos+1]= true;
+					colorArray[xpos][ypos+1] = Color.GRAY;
+					clearZeros(xpos,ypos+1);
+				}
+						
+				if(xpos<mines.length-1&& ypos< mines.length-1 && revealed[xpos+1][ypos+1]!=true)//down right
+				{
+					revealed[xpos+1][ypos+1]= true;
+					colorArray[xpos+1][ypos+1] = Color.GRAY;
+					clearZeros(xpos+1,ypos+1);
+				}
+						
+				if(ypos>0 && xpos<mines.length-1 && ypos< mines.length && revealed[xpos+1][ypos-1]!=true)//top right
+				{
+					revealed[xpos+1][ypos-1]= true;
+					colorArray[xpos+1][ypos-1] = Color.GRAY;
+					clearZeros(xpos+1,ypos-1);
+				}
+						
+				if(xpos<mines.length-1 && revealed[xpos+1][ypos]!=true)//Right
+				{
+					revealed[xpos+1][ypos]= true;
+					colorArray[xpos+1][ypos] = Color.GRAY;
+					clearZeros(xpos+1,ypos);
+				}
+						
+				
 			}
-		clearZeros(toClear, xpos, ypos);
+		
 	}
 	
 }
