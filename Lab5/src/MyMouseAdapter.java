@@ -37,9 +37,6 @@ public class MyMouseAdapter extends MouseAdapter
 			myPanel.repaint();
 			break;
 		case 3:
-		
-			//Right mouse button
-			//Do nothing
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
 			//Do nothing
@@ -120,7 +117,7 @@ public class MyMouseAdapter extends MouseAdapter
 					myPanel.repaint();
 					break;
 				}
-			case 3:	//when right click outside grid change white cells color
+			case 3:	//when right click flag (paint red)
 				Component cr = e.getComponent();
 				while (!(cr instanceof JFrame)) {
 					cr = cr.getParent();
@@ -161,8 +158,6 @@ public class MyMouseAdapter extends MouseAdapter
 						} else {
 							//Released the mouse button on the same cell where it was pressed
 							
-									//On the grid other than on the left column and on the top row: set random color
-									//Color newColor = null;*/
 								
 								
 									if(myRightClickPanel.revealed[myRightClickPanel.mouseDownGridX][myRightClickPanel.mouseDownGridY]!= true)//does not let to marked revealed spaces
@@ -186,8 +181,6 @@ public class MyMouseAdapter extends MouseAdapter
 						myRightClickPanel.repaint();
 						break;
 					}
-				//Right mouse button
-				//Do nothing
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)
 				//Do nothing
